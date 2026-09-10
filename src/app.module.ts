@@ -19,7 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_DATABASE || 'study_db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
     StoresModule,
