@@ -1,28 +1,44 @@
 import {
   Entity,
   Column,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  Unique,
 } from 'typeorm';
+import { UserRole } from '../../../core/constants/user-role.enum';
+import { Order } from '../../orders/entities/order.entity';
 
-@Entity()
+@Entity('user')
+@Unique('UQ_user_email', ['email'])
 export class User {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
-  userName!: string;
+  @Column({ length: 100 })
+  username!: string;
 
-  @Column()
+  @Column({ length: 320 })
   email!: string;
 
-  @Column()
+  @Column({ select: false })
   passwordHash!: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    enumName: 'user_role_enum',
+    default: UserRole.USER,
+  })
+  role!: UserRole;
 
   @CreateDateColumn()
   createdAt!: Date;
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders!: Order[];
 }

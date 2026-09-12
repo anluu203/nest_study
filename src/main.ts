@@ -20,20 +20,22 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  // Enable CORS
-  app.enableCors();
-
   // Thiết lập global prefix cho tất cả các API routes
   app.setGlobalPrefix(GLOBAL_API_PREFIX);
 
   // Swagger Configuration
   const config = new DocumentBuilder()
-    .setTitle('Sport Shop API')
-    .setDescription('API documentation for Booking Application Platform')
+    .setTitle('Computer Parts E-commerce API')
+    .setDescription('API documentation for the computer parts store')
     .setVersion('1.0')
     .addTag('Authentication', 'Authentication endpoints')
     .addTag('Users', 'User management endpoints')
     .addTag('Stores', 'Store management endpoints')
+    .addTag('Category Parents', 'Top-level product categories')
+    .addTag('Categories', 'Product categories')
+    .addTag('Products', 'Product catalog')
+    .addTag('Orders', 'Cart, checkout and customer orders')
+    .addTag('Admin Orders', 'Administrative order management')
     .addBearerAuth(
       {
         type: 'http',
@@ -64,4 +66,4 @@ async function bootstrap() {
     `Swagger documentation available at: http://${process.env.HOST || 'localhost'}:${process.env.PORT || 8080}/api-docs`,
   );
 }
-bootstrap();
+void bootstrap();

@@ -4,6 +4,7 @@ export class InitTable1778687696336 implements MigrationInterface {
   name = 'InitTable1778687696336';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
     await queryRunner.query(
       `CREATE TABLE "user" ("id" uuid NOT NULL, "userName" character varying NOT NULL, "email" character varying NOT NULL, "passwordHash" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
     );

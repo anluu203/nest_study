@@ -5,6 +5,14 @@ import { UsersModule } from './modules/users/users.module';
 import { StoresModule } from './modules/stores/stores.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './modules/auth/auth.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { ProductsModule } from './modules/products/products.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './core/guards/jwt-auth.guard';
+import { RolesGuard } from './core/guards/roles.guard';
+import { DomainExceptionFilter } from './core/filters/domain-exception.filter';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,8 +31,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     UsersModule,
     StoresModule,
+    AuthModule,
+    CategoriesModule,
+    ProductsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
+    { provide: APP_FILTER, useClass: DomainExceptionFilter },
+  ],
 })
 export class AppModule {}

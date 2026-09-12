@@ -1,20 +1,4 @@
 /**
- * Trạng thái đơn hàng - Order State Machine
- */
-export enum StateOrder {
-  Canceled = 0,
-  Pending = 1,
-  Confirmed = 2,
-  Processing = 3,
-  Shipped = 4,
-  Delivered = 5,
-  Returned = 6,
-  Refunded = 7,
-  RequestCancel = 8,
-  RejectCancel = 9,
-}
-
-/**
  * Phương thức thanh toán
  */
 export enum PaymentMethod {
