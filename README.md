@@ -31,6 +31,19 @@ npm run migration:revert
 npm run migration:generate -- src/migrations/TenMigration
 ```
 
+## Seed catalog
+
+Sau khi chạy migration, import dữ liệu mẫu bằng lệnh:
+
+```bash
+npm run seed:catalog
+```
+
+Script đọc cấu hình `DB_*` từ `.env` tại thư mục gốc dự án và sử dụng
+chứng chỉ SSL `ca.pem` giống backend. Kiểm tra database đích được in ra khi chạy.
+Dữ liệu mẫu gồm 3 nhóm danh mục, 10 danh mục và 10 sản phẩm. Có thể chạy lại:
+danh mục được cập nhật mô tả, sản phẩm đã tồn tại theo tên sẽ được bỏ qua.
+
 ## Phân quyền admin
 
 Tài khoản đăng ký qua API luôn có role `USER`. Trong phiên bản v1, cấp quyền

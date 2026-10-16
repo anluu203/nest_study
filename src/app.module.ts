@@ -13,6 +13,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './core/guards/jwt-auth.guard';
 import { RolesGuard } from './core/guards/roles.guard';
 import { DomainExceptionFilter } from './core/filters/domain-exception.filter';
+import { readFileSync } from 'node:fs';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +29,10 @@ import { DomainExceptionFilter } from './core/filters/domain-exception.filter';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: false,
+      ssl: {
+        rejectUnauthorized: true,
+        ca: readFileSync('ca.pem', 'utf8'),
+      },
     }),
     UsersModule,
     StoresModule,

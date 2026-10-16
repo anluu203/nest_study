@@ -8,7 +8,7 @@ export class CreateUserDto {
   @MaxLength(100)
   readonly username!: string;
 
-  @ApiProperty({ example: 'user@example.com' })
+  @ApiProperty({ example: 'admin@gmail.com' })
   @IsEmail()
   @MaxLength(320)
   readonly email!: string;
