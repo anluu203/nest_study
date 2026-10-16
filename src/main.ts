@@ -3,9 +3,11 @@ import { AppModule } from './app.module';
 import { GLOBAL_API_PREFIX } from './core/constants/api.constants';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { serveImages } from './modules/images/serve-images';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Enable validation globally
   app.useGlobalPipes(
@@ -20,6 +22,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+  serveImages(app);
   // Thiết lập global prefix cho tất cả các API routes
   app.setGlobalPrefix(GLOBAL_API_PREFIX);
 
@@ -34,6 +37,7 @@ async function bootstrap() {
     .addTag('Category Parents', 'Top-level product categories')
     .addTag('Categories', 'Product categories')
     .addTag('Products', 'Product catalog')
+    .addTag('Images', 'Image uploads for avatars and the admin catalog')
     .addTag('Orders', 'Cart, checkout and customer orders')
     .addTag('Admin Orders', 'Administrative order management')
     .addBearerAuth(

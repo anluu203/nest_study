@@ -22,6 +22,9 @@ export class User {
   @Column({ length: 320 })
   email!: string;
 
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  avatarUrl!: string | null;
+
   @Column({ select: false })
   passwordHash!: string;
 

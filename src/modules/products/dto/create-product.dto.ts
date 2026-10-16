@@ -2,12 +2,12 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsOptional,
   IsString,
-  IsUrl,
   IsUUID,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { IsImageUrl } from '../../../core/validators/is-image-url.decorator';
 
 export class CreateProductDto {
   @ApiProperty({ example: 'AMD Ryzen 7 7800X3D' })
@@ -21,10 +21,14 @@ export class CreateProductDto {
   @IsString()
   description?: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/product.jpg' })
+  @ApiPropertyOptional({
+    type: String,
+    nullable: true,
+    example: 'https://example.com/product.jpg',
+  })
   @IsOptional()
-  @IsUrl({ require_tld: false })
-  imageUrl?: string;
+  @IsImageUrl()
+  imageUrl?: string | null;
 
   @ApiProperty({ type: String, example: '8000000' })
   @IsString()

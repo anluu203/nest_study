@@ -103,7 +103,7 @@ export class ProductsService {
         product.description = dto.description.trim() || null;
       }
       if (dto.imageUrl !== undefined) {
-        product.imageUrl = dto.imageUrl.trim() || null;
+        product.imageUrl = dto.imageUrl?.trim() || null;
       }
 
       if (dto.price !== undefined && dto.price !== product.price) {

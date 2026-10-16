@@ -15,6 +15,7 @@ export interface SafeUser {
   id: string;
   username: string;
   email: string;
+  avatarUrl: string | null;
   role: UserRole;
   createdAt: Date;
   updatedAt: Date;
@@ -75,6 +76,9 @@ export class UsersService {
     if (updateUserDto.username !== undefined) {
       user.username = updateUserDto.username.trim();
     }
+    if (updateUserDto.avatarUrl !== undefined) {
+      user.avatarUrl = updateUserDto.avatarUrl ?? null;
+    }
     return this.toSafeUser(await this.userRepository.save(user));
   }
 
@@ -83,6 +87,7 @@ export class UsersService {
       id: user.id,
       username: user.username,
       email: user.email,
+      avatarUrl: user.avatarUrl ?? null,
       role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

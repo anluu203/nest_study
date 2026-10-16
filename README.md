@@ -56,6 +56,36 @@ UPDATE "user" SET "role" = 'ADMIN' WHERE "email" = 'admin@example.com';
 Các API tạo, sửa, xóa catalog và cập nhật trạng thái đơn yêu cầu JWT của tài
 khoản `ADMIN`.
 
+## Upload ảnh
+
+Chạy `npm run migration:run` để bổ sung `user.avatarUrl`, `categories.imageUrl`
+và `category_parents.imageUrl`. Cấu hình `IMAGES_DIRECTORY=images` lưu file tại
+thư mục `images` ở gốc dự án; ảnh được phục vụ công khai tại `/images/...`,
+không nằm dưới prefix `/api/v1`. Thư mục được tạo tự động khi upload.
+
+| Endpoint | Quyền | Nơi lưu |
+|---|---|---|
+| `POST /api/v1/images/avatars` | Đăng nhập | `images/avatars` |
+| `POST /api/v1/images/products` | ADMIN | `images/products` |
+| `POST /api/v1/images/categories` | ADMIN | `images/categories` |
+
+Gửi `multipart/form-data` với đúng một field `file`. Hỗ trợ JPEG, PNG, GIF,
+WebP, tối đa 5 MB; kiểm tra chữ ký file và MIME, đặt tên UUID. Response:
+`{ "imageUrl": "/images/products/<uuid>.png", "mimeType": "image/png", "size": 1024 }`.
+Nếu cấu hình `PUBLIC_BASE_URL` (ví dụ `https://api.example.com`), `imageUrl`
+trả về URL tuyệt đối theo origin đó.
+
+Sau khi upload, gửi `imageUrl` vào API tạo/sửa sản phẩm hoặc danh mục;
+avatar dùng `PATCH /api/v1/users/me` với `{ "avatarUrl": "<imageUrl>" }`.
+FE cũng có thể gửi trực tiếp URL ảnh HTTP(S) từ hosting vào các trường này;
+backend lưu URL tham chiếu, không tải bản sao từ hosting. Gửi `null` để bỏ ảnh.
+Upload chỉ lưu file, không tự gắn file vào bản ghi; file cũ vẫn được giữ khi đổi ảnh.
+
+`ImageStorage` là contract lưu trữ, hiện sử dụng `LocalImageStorage`. Khi tích hợp
+cloud, thêm adapter và đổi provider trong `ImagesModule`. Khi deploy với local
+storage, gắn persistent volume vào `IMAGES_DIRECTORY` để giữ ảnh qua các lần deploy.
+Xem [ví dụ tích hợp FE](FE_API_HANDOFF.md#8-upload-và-thay-đổi-ảnh).
+
 ## Luồng đơn hàng
 
 ```text

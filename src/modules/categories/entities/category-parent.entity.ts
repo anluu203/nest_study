@@ -19,6 +19,9 @@ export class CategoryParent {
   @Column({ type: 'text', nullable: true })
   description!: string | null;
 
+  @Column({ type: 'varchar', length: 2048, nullable: true })
+  imageUrl!: string | null;
+
   @CreateDateColumn()
   createdAt!: Date;
 

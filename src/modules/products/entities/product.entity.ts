@@ -26,7 +26,7 @@ export class Product {
   @Column({ type: 'text', nullable: true })
   description!: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   imageUrl!: string | null;
 
   @Column({ type: 'bigint' })

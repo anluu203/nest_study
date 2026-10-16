@@ -6,6 +6,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { IsImageUrl } from '../../../core/validators/is-image-url.decorator';
 
 export class CreateCategoryDto {
   @ApiProperty({ example: 'CPU' })
@@ -18,6 +19,15 @@ export class CreateCategoryDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @ApiPropertyOptional({
+    type: String,
+    nullable: true,
+    example: 'https://example.com/category.png',
+  })
+  @IsOptional()
+  @IsImageUrl()
+  imageUrl?: string | null;
 
   @ApiProperty({ format: 'uuid' })
   @IsUUID()

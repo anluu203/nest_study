@@ -10,7 +10,7 @@ Tài liệu này mô tả **API đang có trong mã nguồn**. Các đường d�
 - Giá tính bằng VND và là **chuỗi số nguyên** trong JSON (`price`, `unitPrice`, `totalPrice`) vì DB dùng `bigint`. FE nên giữ dạng string khi trao đổi với API; không gửi số thập phân hoặc ký hiệu tiền tệ.
 - Các DTO được kiểm tra bằng validation toàn cục: field lạ trả `400`. `PATCH` chỉ cần gửi field muốn đổi. Thời gian `createdAt`, `updatedAt` là chuỗi ngày giờ ISO khi serialize.
 - Lỗi thường có dạng `{ "message": "...", "error": "Bad Request", "statusCode": 400 }`; lỗi validation có thể có `message` là mảng chuỗi. Các status thường gặp: `400` payload/trạng thái yêu cầu không hợp lệ, `401` xác thực, `403` phân quyền, `404` không tìm thấy, `409` xung đột. `POST` mặc định trả `201`; các `DELETE` được ghi `204` không có body.
-- API chưa có upload ảnh; `imageUrl` là URL gửi trong JSON. CORS local mặc định cho `http://localhost:5173` (có thể đổi qua `FRONTEND_URL`).
+- Upload ảnh dùng `multipart/form-data` (xem mục 8); các API tạo/sửa vẫn dùng JSON với `imageUrl`/`avatarUrl`. CORS local mặc định cho `http://localhost:5173` (có thể đổi qua `FRONTEND_URL`).
 - `GET /api/v1` là route Public đơn giản, trả text `Hello World!`; không chứa dữ liệu nghiệp vụ.
 
 ## 1. Tài khoản
@@ -20,7 +20,7 @@ Tài liệu này mô tả **API đang có trong mã nguồn**. Các đường d�
 | Đăng ký | POST | `/api/v1/auth/register` | Public | `RegisterBody` | `AuthResponse` |
 | Đăng nhập | POST | `/api/v1/auth/login` | Public | `LoginBody` | `AuthResponse` |
 | Lấy tài khoản hiện tại | GET | `/api/v1/auth/me` | Đăng nhập | Không | `SafeUser` |
-| Sửa tên hiển thị | PATCH | `/api/v1/users/me` | Đăng nhập | `UpdateUserBody` | `SafeUser` |
+| Sửa tên hiển thị, avatar | PATCH | `/api/v1/users/me` | Đăng nhập | `UpdateUserBody` | `SafeUser` |
 
 **RegisterBody**
 
@@ -43,12 +43,12 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
   "accessToken": "<JWT>",
   "user": {
     "id": "<uuid>", "username": "nguyenvana", "email": "admin@gmail.com",
-    "role": "USER", "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
+    "role": "USER", "avatarUrl": null, "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
   }
 }
 ```
 
-`SafeUser` là object `user` ở trên, không có `passwordHash`. `UpdateUserBody`: `{ "username": "tenmoi" }`, tên 2–100 ký tự. Hiện chưa có API đổi email, mật khẩu, đăng xuất hoặc refresh token.
+`SafeUser` là object `user` ở trên, không có `passwordHash`. `UpdateUserBody`: `{ "username": "tenmoi", "avatarUrl": "<URL hoặc đường dẫn upload>" }`; chỉ gửi field muốn sửa. Tên 2–100 ký tự; `avatarUrl` nhận HTTP(S), đường dẫn từ upload hoặc `null` để bỏ avatar. Hiện chưa có API đổi email, mật khẩu, đăng xuất hoặc refresh token.
 
 ## 2. Danh mục cấp cha
 
@@ -66,7 +66,7 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 { "name": "Linh kiện máy tính", "description": "Nhóm linh kiện" }
 ```
 
-`name` bắt buộc, 1–150 ký tự và duy nhất; `description` tùy chọn. Response gồm `id`, `name`, `description` (`string | null`), `createdAt`, `updatedAt`. Danh sách sắp theo tên tăng dần. Xóa danh mục cha đang chứa danh mục con trả `409`.
+`name` bắt buộc, 1–150 ký tự và duy nhất; `description`, `imageUrl` tùy chọn. Response gồm `id`, `name`, `description`, `imageUrl` (`string | null`), `createdAt`, `updatedAt`. Danh sách sắp theo tên tăng dần. Xóa danh mục cha đang chứa danh mục con trả `409`.
 
 ## 3. Danh mục con
 
@@ -84,7 +84,7 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 { "name": "CPU", "description": "Bộ xử lý", "parentId": "<uuid danh mục cha>" }
 ```
 
-`name` bắt buộc, 1–150 ký tự; `parentId` bắt buộc khi tạo và phải tồn tại; `description` tùy chọn. Response danh sách/chi tiết gồm `id`, `name`, `description`, `parentId`, `parent` (object danh mục cha), `createdAt`, `updatedAt`. Danh sách sắp theo tên tăng dần. Tên trùng trong cùng danh mục cha hoặc xóa danh mục đang có sản phẩm trả `409`.
+`name` bắt buộc, 1–150 ký tự; `parentId` bắt buộc khi tạo và phải tồn tại; `description`, `imageUrl` tùy chọn. Response danh sách/chi tiết gồm `id`, `name`, `description`, `imageUrl` (`string | null`), `parentId`, `parent` (object danh mục cha), `createdAt`, `updatedAt`. Danh sách sắp theo tên tăng dần. Tên trùng trong cùng danh mục cha hoặc xóa danh mục đang có sản phẩm trả `409`.
 
 ## 4. Sản phẩm
 
@@ -108,7 +108,7 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 }
 ```
 
-`name`: 1–200 ký tự; `price`: **string** số nguyên dương, tối đa 12 chữ số; `categoryId`: UUID của danh mục có thật. `description`, `imageUrl` tùy chọn; `imageUrl` phải là URL hợp lệ. Query: `page` mặc định 1, `pageSize` mặc định 20 và tối đa 100, `search` tìm không phân biệt hoa thường trong tên/mô tả, `categoryId` lọc đúng danh mục con. Response danh sách:
+`name`: 1–200 ký tự; `price`: **string** số nguyên dương, tối đa 12 chữ số; `categoryId`: UUID của danh mục có thật. `description`, `imageUrl` tùy chọn; `imageUrl` nhận URL HTTP(S), đường dẫn trả về từ upload hoặc `null` để bỏ ảnh (tối đa 2048 ký tự). Query: `page` mặc định 1, `pageSize` mặc định 20 và tối đa 100, `search` tìm không phân biệt hoa thường trong tên/mô tả, `categoryId` lọc đúng danh mục con. Response danh sách:
 
 ```json
 {
@@ -208,4 +208,75 @@ Module này hiện tồn tại trong backend nhưng không gắn với luồng s
 3. Thêm sản phẩm vào giỏ, dùng `item.id` để cập nhật/xóa, rồi checkout.
 4. Hiển thị lịch sử và chi tiết đơn; trang admin dùng riêng các route `admin/orders`.
 
-**Chưa có API** cho tồn kho, thanh toán, địa chỉ giao hàng, mã giảm giá, hủy đơn, refresh token hoặc upload file. Tài liệu `nestjs-ecommerce-modules.md` là bản thiết kế cũ, có endpoint dự kiến chưa được triển khai; khi tích hợp hãy dùng các endpoint trong tài liệu này và Swagger của server đang chạy.
+**Chưa có API** cho tồn kho, thanh toán, địa chỉ giao hàng, mã giảm giá, hủy đơn hoặc refresh token. Tài liệu `nestjs-ecommerce-modules.md` là bản thiết kế cũ, có endpoint dự kiến chưa được triển khai; khi tích hợp hãy dùng các endpoint trong tài liệu này và Swagger của server đang chạy.
+
+## 8. Upload và thay đổi ảnh
+
+| Chức năng | Method | Endpoint | Quyền |
+|---|---|---|---|
+| Upload avatar | POST | `/api/v1/images/avatars` | Đăng nhập |
+| Upload ảnh sản phẩm | POST | `/api/v1/images/products` | ADMIN |
+| Upload ảnh danh mục cha/con | POST | `/api/v1/images/categories` | ADMIN |
+
+Body là `multipart/form-data` gồm **một file**, field tên `file`; không gửi thêm
+field khác. JPEG, PNG, GIF, WebP tối đa **5 MB**; backend kiểm tra chữ ký nội dung
+và MIME, không dựa vào tên file. Thiếu/sai file trả `400`, quá dung lượng trả `413`.
+Thiếu JWT trả `401`, USER upload ảnh catalog trả `403`.
+
+Response `201`:
+
+```json
+{
+  "imageUrl": "/images/products/550e8400-e29b-41d4-a716-446655440000.png",
+  "mimeType": "image/png",
+  "size": 1024
+}
+```
+
+`PUBLIC_BASE_URL` cấu hình trên backend sẽ thêm origin vào `imageUrl`; nếu chưa
+cấu hình, FE hiển thị ảnh bằng `new URL(imageUrl, API_ORIGIN).href`.
+Ví dụ `API_ORIGIN = "http://localhost:8080"`, không thêm `/api/v1`.
+Ảnh tại `/images/...` là public, không cần token để hiển thị.
+
+Luồng **chọn file từ máy**: upload → lấy `imageUrl` → gửi JSON để lưu bản ghi:
+
+| Đích | API lưu ảnh | JSON |
+|---|---|---|
+| Avatar của mình | `PATCH /api/v1/users/me` | `{ "avatarUrl": "<imageUrl>" }` |
+| Sản phẩm | `POST /api/v1/products` hoặc `PATCH /api/v1/products/:id` | Thêm `imageUrl` vào body |
+| Danh mục con | `POST /api/v1/categories` hoặc `PATCH /api/v1/categories/:id` | Thêm `imageUrl` vào body |
+| Danh mục cha | `POST /api/v1/category-parents` hoặc `PATCH /api/v1/category-parents/:id` | Thêm `imageUrl` vào body |
+
+Luồng **nhập URL ảnh công khai từ hosting**: gửi trực tiếp URL HTTP(S) vào
+`imageUrl` hoặc `avatarUrl` của API ở bảng trên. Backend lưu tham chiếu URL,
+không tải bản sao về `images`; FE có thể preview URL trước khi lưu. URL tối đa
+2048 ký tự. Gửi `null` để bỏ ảnh; không gửi field thì giữ ảnh hiện tại.
+
+Ví dụ đổi avatar từ file trong trình duyệt:
+
+```ts
+const API_ORIGIN = 'http://localhost:8080';
+
+async function changeAvatar(file: File, accessToken: string) {
+  const form = new FormData();
+  form.append('file', file);
+  const headers = { Authorization: `Bearer ${accessToken}` };
+  const upload = await fetch(`${API_ORIGIN}/api/v1/images/avatars`, {
+    method: 'POST',
+    headers, // Trình duyệt tự đặt Content-Type kèm multipart boundary.
+    body: form,
+  });
+  if (!upload.ok) throw new Error(`Upload thất bại: ${upload.status}`);
+  const { imageUrl } = await upload.json();
+  const update = await fetch(`${API_ORIGIN}/api/v1/users/me`, {
+    method: 'PATCH',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ avatarUrl: imageUrl }),
+  });
+  if (!update.ok) throw new Error(`Lưu avatar thất bại: ${update.status}`);
+  return update.json(); // SafeUser với avatarUrl mới.
+}
+```
+
+Upload không tự gắn ảnh vào bản ghi. File đã upload vẫn tồn tại nếu người dùng
+hủy form, lưu bản ghi lỗi hoặc thay ảnh; chưa có API dọn/xóa file.

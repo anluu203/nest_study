@@ -23,6 +23,7 @@ export class CategoryParentsService {
     const entity = this.repository.create({
       name: dto.name.trim(),
       description: dto.description?.trim() || null,
+      imageUrl: dto.imageUrl ?? null,
     });
     return this.save(entity);
   }
@@ -46,6 +47,7 @@ export class CategoryParentsService {
     if (dto.description !== undefined) {
       entity.description = dto.description.trim() || null;
     }
+    if (dto.imageUrl !== undefined) entity.imageUrl = dto.imageUrl ?? null;
     return this.save(entity);
   }
 

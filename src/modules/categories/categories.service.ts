@@ -29,6 +29,7 @@ export class CategoriesService {
       this.repository.create({
         name: dto.name.trim(),
         description: dto.description?.trim() || null,
+        imageUrl: dto.imageUrl ?? null,
         parentId: dto.parentId,
       }),
     );
@@ -62,6 +63,7 @@ export class CategoriesService {
     if (dto.description !== undefined) {
       entity.description = dto.description.trim() || null;
     }
+    if (dto.imageUrl !== undefined) entity.imageUrl = dto.imageUrl ?? null;
     return this.save(entity);
   }
 

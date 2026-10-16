@@ -14,6 +14,7 @@ import { JwtAuthGuard } from './core/guards/jwt-auth.guard';
 import { RolesGuard } from './core/guards/roles.guard';
 import { DomainExceptionFilter } from './core/filters/domain-exception.filter';
 import { readFileSync } from 'node:fs';
+import { ImagesModule } from './modules/images/images.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -40,6 +41,7 @@ import { readFileSync } from 'node:fs';
     CategoriesModule,
     ProductsModule,
     OrdersModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [
