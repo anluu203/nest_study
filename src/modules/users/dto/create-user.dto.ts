@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEmail, MinLength, MaxLength } from 'class-validator';
+import { ProfileFieldsDto } from './profile-fields.dto';
 
-export class CreateUserDto {
+export class CreateUserDto extends ProfileFieldsDto {
   @ApiProperty({ example: 'nguyenvana' })
   @IsString()
   @MinLength(2)

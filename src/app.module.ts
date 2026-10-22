@@ -30,10 +30,10 @@ import { ImagesModule } from './modules/images/images.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: false,
-      ssl: {
-        rejectUnauthorized: true,
-        ca: readFileSync('ca.pem', 'utf8'),
-      },
+      // ssl: {
+      //   rejectUnauthorized: true,
+      //   ca: readFileSync('ca.pem', 'utf8'),
+      // },
     }),
     UsersModule,
     StoresModule,

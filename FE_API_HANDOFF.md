@@ -15,17 +15,21 @@ Tài liệu này mô tả **API đang có trong mã nguồn**. Các đường d�
 
 ## 1. Tài khoản
 
-| Chức năng | Method | Endpoint | Quyền | Payload | Kết quả |
-|---|---|---|---|---|---|
-| Đăng ký | POST | `/api/v1/auth/register` | Public | `RegisterBody` | `AuthResponse` |
-| Đăng nhập | POST | `/api/v1/auth/login` | Public | `LoginBody` | `AuthResponse` |
-| Lấy tài khoản hiện tại | GET | `/api/v1/auth/me` | Đăng nhập | Không | `SafeUser` |
-| Sửa tên hiển thị, avatar | PATCH | `/api/v1/users/me` | Đăng nhập | `UpdateUserBody` | `SafeUser` |
+| Chức năng                | Method | Endpoint                | Quyền     | Payload          | Kết quả        |
+| ------------------------ | ------ | ----------------------- | --------- | ---------------- | -------------- |
+| Đăng ký                  | POST   | `/api/v1/auth/register` | Public    | `RegisterBody`   | `AuthResponse` |
+| Đăng nhập                | POST   | `/api/v1/auth/login`    | Public    | `LoginBody`      | `AuthResponse` |
+| Lấy tài khoản hiện tại   | GET    | `/api/v1/auth/me`       | Đăng nhập | Không            | `SafeUser`     |
+| Sửa tên hiển thị, avatar | PATCH  | `/api/v1/users/me`      | Đăng nhập | `UpdateUserBody` | `SafeUser`     |
 
 **RegisterBody**
 
 ```json
-{ "username": "nguyenvana", "email": "admin@gmail.com", "password": "password123" }
+{
+  "username": "nguyenvana",
+  "email": "admin@gmail.com",
+  "password": "password123"
+}
 ```
 
 `username`: 2–100 ký tự; `email`: email hợp lệ, tối đa 320 ký tự; `password`: 8–72 ký tự. Email được chuẩn hóa thành chữ thường. Email trùng trả `409`.
@@ -42,8 +46,13 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 {
   "accessToken": "<JWT>",
   "user": {
-    "id": "<uuid>", "username": "nguyenvana", "email": "admin@gmail.com",
-    "role": "USER", "avatarUrl": null, "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
+    "id": "<uuid>",
+    "username": "nguyenvana",
+    "email": "admin@gmail.com",
+    "role": "USER",
+    "avatarUrl": null,
+    "createdAt": "<ISO date>",
+    "updatedAt": "<ISO date>"
   }
 }
 ```
@@ -52,13 +61,13 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 
 ## 2. Danh mục cấp cha
 
-| Chức năng | Method | Endpoint | Quyền | Payload / query | Kết quả |
-|---|---|---|---|---|---|
-| Danh sách | GET | `/api/v1/category-parents` | Public | Không | `CategoryParent[]` |
-| Chi tiết | GET | `/api/v1/category-parents/:id` | Public | Không | `CategoryParent` |
-| Tạo | POST | `/api/v1/category-parents` | ADMIN | `CategoryParentBody` | `CategoryParent` |
-| Sửa | PATCH | `/api/v1/category-parents/:id` | ADMIN | Một phần `CategoryParentBody` | `CategoryParent` |
-| Xóa | DELETE | `/api/v1/category-parents/:id` | ADMIN | Không | `204` |
+| Chức năng | Method | Endpoint                       | Quyền  | Payload / query               | Kết quả            |
+| --------- | ------ | ------------------------------ | ------ | ----------------------------- | ------------------ |
+| Danh sách | GET    | `/api/v1/category-parents`     | Public | Không                         | `CategoryParent[]` |
+| Chi tiết  | GET    | `/api/v1/category-parents/:id` | Public | Không                         | `CategoryParent`   |
+| Tạo       | POST   | `/api/v1/category-parents`     | ADMIN  | `CategoryParentBody`          | `CategoryParent`   |
+| Sửa       | PATCH  | `/api/v1/category-parents/:id` | ADMIN  | Một phần `CategoryParentBody` | `CategoryParent`   |
+| Xóa       | DELETE | `/api/v1/category-parents/:id` | ADMIN  | Không                         | `204`              |
 
 **CategoryParentBody**
 
@@ -70,13 +79,13 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 
 ## 3. Danh mục con
 
-| Chức năng | Method | Endpoint | Quyền | Payload / query | Kết quả |
-|---|---|---|---|---|---|
-| Danh sách, lọc theo cha | GET | `/api/v1/categories?parentId=<uuid>` | Public | `parentId` tùy chọn | `Category[]` |
-| Chi tiết | GET | `/api/v1/categories/:id` | Public | Không | `Category` |
-| Tạo | POST | `/api/v1/categories` | ADMIN | `CategoryBody` | `Category` |
-| Sửa | PATCH | `/api/v1/categories/:id` | ADMIN | Một phần `CategoryBody` | `Category` |
-| Xóa | DELETE | `/api/v1/categories/:id` | ADMIN | Không | `204` |
+| Chức năng               | Method | Endpoint                             | Quyền  | Payload / query         | Kết quả      |
+| ----------------------- | ------ | ------------------------------------ | ------ | ----------------------- | ------------ |
+| Danh sách, lọc theo cha | GET    | `/api/v1/categories?parentId=<uuid>` | Public | `parentId` tùy chọn     | `Category[]` |
+| Chi tiết                | GET    | `/api/v1/categories/:id`             | Public | Không                   | `Category`   |
+| Tạo                     | POST   | `/api/v1/categories`                 | ADMIN  | `CategoryBody`          | `Category`   |
+| Sửa                     | PATCH  | `/api/v1/categories/:id`             | ADMIN  | Một phần `CategoryBody` | `Category`   |
+| Xóa                     | DELETE | `/api/v1/categories/:id`             | ADMIN  | Không                   | `204`        |
 
 **CategoryBody**
 
@@ -88,13 +97,13 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 
 ## 4. Sản phẩm
 
-| Chức năng | Method | Endpoint | Quyền | Payload / query | Kết quả |
-|---|---|---|---|---|---|
-| Danh sách, tìm kiếm, lọc | GET | `/api/v1/products` | Public | `page`, `pageSize`, `search`, `categoryId` | `Page<Product>` |
-| Chi tiết | GET | `/api/v1/products/:id` | Public | Không | `Product` |
-| Tạo | POST | `/api/v1/products` | ADMIN | `ProductBody` | `Product` |
-| Sửa | PATCH | `/api/v1/products/:id` | ADMIN | Một phần `ProductBody` | `Product` |
-| Ẩn sản phẩm | DELETE | `/api/v1/products/:id` | ADMIN | Không | `204` |
+| Chức năng                | Method | Endpoint               | Quyền  | Payload / query                            | Kết quả         |
+| ------------------------ | ------ | ---------------------- | ------ | ------------------------------------------ | --------------- |
+| Danh sách, tìm kiếm, lọc | GET    | `/api/v1/products`     | Public | `page`, `pageSize`, `search`, `categoryId` | `Page<Product>` |
+| Chi tiết                 | GET    | `/api/v1/products/:id` | Public | Không                                      | `Product`       |
+| Tạo                      | POST   | `/api/v1/products`     | ADMIN  | `ProductBody`                              | `Product`       |
+| Sửa                      | PATCH  | `/api/v1/products/:id` | ADMIN  | Một phần `ProductBody`                     | `Product`       |
+| Ẩn sản phẩm              | DELETE | `/api/v1/products/:id` | ADMIN  | Không                                      | `204`           |
 
 **ProductBody**
 
@@ -112,15 +121,31 @@ Sai email hoặc mật khẩu trả `401`. Response của cả đăng ký và đ
 
 ```json
 {
-  "items": [{
-    "id": "<uuid>", "name": "AMD Ryzen 7 7800X3D", "description": "CPU 8 nhân",
-    "imageUrl": "https://example.com/product.jpg", "price": "8000000",
-    "categoryId": "<uuid>", "isActive": true,
-    "category": { "id": "<uuid>", "name": "CPU", "parentId": "<uuid>", "parent": { "id": "<uuid>", "name": "Linh kiện máy tính" } },
-    "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
-  }],
-  "totalCount": 1, "pageNumber": 1, "pageSize": 20, "totalPages": 1,
-  "hasPreviousPage": false, "hasNextPage": false
+  "items": [
+    {
+      "id": "<uuid>",
+      "name": "AMD Ryzen 7 7800X3D",
+      "description": "CPU 8 nhân",
+      "imageUrl": "https://example.com/product.jpg",
+      "price": "8000000",
+      "categoryId": "<uuid>",
+      "isActive": true,
+      "category": {
+        "id": "<uuid>",
+        "name": "CPU",
+        "parentId": "<uuid>",
+        "parent": { "id": "<uuid>", "name": "Linh kiện máy tính" }
+      },
+      "createdAt": "<ISO date>",
+      "updatedAt": "<ISO date>"
+    }
+  ],
+  "totalCount": 1,
+  "pageNumber": 1,
+  "pageSize": 20,
+  "totalPages": 1,
+  "hasPreviousPage": false,
+  "hasNextPage": false
 }
 ```
 
@@ -130,16 +155,16 @@ Ví dụ `category`/`parent` ở trên lược bớt các field; object thực t
 
 Giỏ hàng là một order có `status="AddingItem"`. Mỗi tài khoản có tối đa một giỏ đang mở. Tất cả endpoint dưới đây cần JWT; backend lấy chủ sở hữu từ token, FE không gửi `userId`.
 
-| Chức năng | Method | Endpoint | Payload | Kết quả |
-|---|---|---|---|---|
-| Xem giỏ | GET | `/api/v1/orders/cart` | Không | `Order` hoặc giỏ rỗng |
-| Thêm sản phẩm | POST | `/api/v1/orders/cart/items` | `{ "productId": "<uuid>", "quantity": 2 }` | `Order` |
-| Đổi số lượng | PATCH | `/api/v1/orders/cart/items/:itemId` | `{ "quantity": 3 }` | `Order` |
-| Xóa một dòng | DELETE | `/api/v1/orders/cart/items/:itemId` | Không | `Order` |
-| Xóa toàn bộ giỏ | DELETE | `/api/v1/orders/cart` | Không | `204` |
-| Checkout | POST | `/api/v1/orders/checkout` | Không | `Order`, status `Processing` |
-| Lịch sử đơn | GET | `/api/v1/orders` | Không | `Order[]` |
-| Chi tiết đơn | GET | `/api/v1/orders/:id` | Không | `Order` |
+| Chức năng       | Method | Endpoint                            | Payload                                    | Kết quả                      |
+| --------------- | ------ | ----------------------------------- | ------------------------------------------ | ---------------------------- |
+| Xem giỏ         | GET    | `/api/v1/orders/cart`               | Không                                      | `Order` hoặc giỏ rỗng        |
+| Thêm sản phẩm   | POST   | `/api/v1/orders/cart/items`         | `{ "productId": "<uuid>", "quantity": 2 }` | `Order`                      |
+| Đổi số lượng    | PATCH  | `/api/v1/orders/cart/items/:itemId` | `{ "quantity": 3 }`                        | `Order`                      |
+| Xóa một dòng    | DELETE | `/api/v1/orders/cart/items/:itemId` | Không                                      | `Order`                      |
+| Xóa toàn bộ giỏ | DELETE | `/api/v1/orders/cart`               | Không                                      | `204`                        |
+| Checkout        | POST   | `/api/v1/orders/checkout`           | Không                                      | `Order`, status `Processing` |
+| Lịch sử đơn     | GET    | `/api/v1/orders`                    | Không                                      | `Order[]`                    |
+| Chi tiết đơn    | GET    | `/api/v1/orders/:id`                | Không                                      | `Order`                      |
 
 `quantity` là số nguyên từ 1 đến 999. Thêm lại cùng sản phẩm sẽ tăng số lượng trên dòng cũ; tổng vượt 999 trả `400`. Các thao tác đổi/xóa một dòng cần dùng **`item.id`**, không dùng `productId`. Sau mỗi thao tác thêm/đổi/xóa dòng, API trả lại toàn bộ giỏ để FE cập nhật state.
 
@@ -147,26 +172,40 @@ Ví dụ giỏ/đơn có dữ liệu (object `product` còn có các field khác
 
 ```json
 {
-  "id": "<uuid order>", "userId": "<uuid user>", "status": "AddingItem",
+  "id": "<uuid order>",
+  "userId": "<uuid user>",
+  "status": "AddingItem",
   "totalPrice": "16000000",
-  "items": [{
-    "id": "<uuid item>", "orderId": "<uuid order>", "productId": "<uuid product>",
-    "quantity": 2, "unitPrice": "8000000",
-    "product": { "id": "<uuid product>", "name": "AMD Ryzen 7 7800X3D", "price": "8000000", "isActive": true },
-    "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
-  }],
-  "createdAt": "<ISO date>", "updatedAt": "<ISO date>"
+  "items": [
+    {
+      "id": "<uuid item>",
+      "orderId": "<uuid order>",
+      "productId": "<uuid product>",
+      "quantity": 2,
+      "unitPrice": "8000000",
+      "product": {
+        "id": "<uuid product>",
+        "name": "AMD Ryzen 7 7800X3D",
+        "price": "8000000",
+        "isActive": true
+      },
+      "createdAt": "<ISO date>",
+      "updatedAt": "<ISO date>"
+    }
+  ],
+  "createdAt": "<ISO date>",
+  "updatedAt": "<ISO date>"
 }
 ```
 
-Nếu chưa có giỏ, `GET /orders/cart` trả **`200`** với `{ "id": null, "status": "AddingItem", "items": [], "totalPrice": "0" }`. Không có `userId` hay ngày giờ trong trường hợp này. Xóa một dòng cuối cùng trả giỏ còn tồn tại với `items: []`; xóa toàn bộ giỏ xóa order giỏ. Checkout giỏ rỗng trả `400`; không có giỏ trả `404`. Khi checkout, backend lấy lại giá sản phẩm và tính `totalPrice`; FE không gửi tổng tiền, địa chỉ, phương thức thanh toán. Lịch sử không bao gồm giỏ đang mở và sắp theo mới nhất; hiện không phân trang. Người dùng chỉ xem đơn của mình, đơn khác trả `404`.
+Nếu chưa có giỏ, `GET /orders/cart` trả **`200`** với `{ "id": null, "status": "AddingItem", "items": [], "totalPrice": "0" }`. Không có `userId` hay ngày giờ trong trường hợp này. Xóa một dòng cuối cùng trả giỏ còn tồn tại với `items: []`; xóa toàn bộ giỏ xóa order giỏ. Checkout giỏ rỗng trả `400`; không có giỏ trả `404`. Khi checkout, backend lấy lại giá sản phẩm và tính `totalPrice`; FE không gửi tổng tiền. Có thể gửi thông tin giao hàng và phương thức thanh toán tùy chọn theo mục 9; không body vẫn hợp lệ. Lịch sử không bao gồm giỏ đang mở và sắp theo mới nhất; hiện không phân trang. Người dùng chỉ xem đơn của mình, đơn khác trả `404`.
 
 ## 6. Quản trị đơn hàng
 
-| Chức năng | Method | Endpoint | Quyền | Payload / query | Kết quả |
-|---|---|---|---|---|---|
-| Danh sách đơn | GET | `/api/v1/admin/orders` | ADMIN | `page`, `pageSize`, `status` tùy chọn | `Page<Order>` |
-| Chuyển trạng thái | PATCH | `/api/v1/admin/orders/:id/status` | ADMIN | `{ "status": "Preparing" }` | `Order` |
+| Chức năng         | Method | Endpoint                          | Quyền | Payload / query                       | Kết quả       |
+| ----------------- | ------ | --------------------------------- | ----- | ------------------------------------- | ------------- |
+| Danh sách đơn     | GET    | `/api/v1/admin/orders`            | ADMIN | `page`, `pageSize`, `status` tùy chọn | `Page<Order>` |
+| Chuyển trạng thái | PATCH  | `/api/v1/admin/orders/:id/status` | ADMIN | `{ "status": "Preparing" }`           | `Order`       |
 
 `page` mặc định 1; `pageSize` mặc định 20, tối đa 100. `status` có thể lọc `Processing`, `Preparing`, `Shipping`, `Done`; `AddingItem` trả `400` vì giỏ hàng không thuộc danh sách admin. `Page<Order>` có cùng các field phân trang như danh sách sản phẩm. Mỗi order ở danh sách admin có thêm object `user` (gồm `id`, `username`, `email`, `role`, `createdAt`, `updatedAt`) và `items[].product`.
 
@@ -182,20 +221,22 @@ Chỉ được đi đúng bước tiếp theo. Gửi lại trạng thái cũ, b�
 
 Module này hiện tồn tại trong backend nhưng không gắn với luồng sản phẩm/đơn hàng. **Tất cả** route dưới đây cần JWT; hiện không giới hạn role `ADMIN`.
 
-| Chức năng | Method | Endpoint | Payload | Kết quả thực tế |
-|---|---|---|---|---|
-| Danh sách | GET | `/api/v1/stores` | Không | `Store[]` |
-| Chi tiết | GET | `/api/v1/stores/:id` | Không | `Store` hoặc `null` nếu không thấy |
-| Tạo | POST | `/api/v1/stores` | `StoreBody` | `Store` |
-| Sửa | PATCH | `/api/v1/stores/:id` | Một phần `StoreBody` | TypeORM `UpdateResult` |
-| Xóa | DELETE | `/api/v1/stores/:id` | Không | TypeORM `DeleteResult` |
+| Chức năng | Method | Endpoint             | Payload              | Kết quả thực tế                    |
+| --------- | ------ | -------------------- | -------------------- | ---------------------------------- |
+| Danh sách | GET    | `/api/v1/stores`     | Không                | `Store[]`                          |
+| Chi tiết  | GET    | `/api/v1/stores/:id` | Không                | `Store` hoặc `null` nếu không thấy |
+| Tạo       | POST   | `/api/v1/stores`     | `StoreBody`          | `Store`                            |
+| Sửa       | PATCH  | `/api/v1/stores/:id` | Một phần `StoreBody` | TypeORM `UpdateResult`             |
+| Xóa       | DELETE | `/api/v1/stores/:id` | Không                | TypeORM `DeleteResult`             |
 
 **StoreBody**
 
 ```json
 {
-  "name": "Cửa hàng số 1", "description": "Mô tả",
-  "address": "123 Nguyễn Trãi", "imageUrl": "https://example.com/store.jpg"
+  "name": "Cửa hàng số 1",
+  "description": "Mô tả",
+  "address": "123 Nguyễn Trãi",
+  "imageUrl": "https://example.com/store.jpg"
 }
 ```
 
@@ -212,11 +253,11 @@ Module này hiện tồn tại trong backend nhưng không gắn với luồng s
 
 ## 8. Upload và thay đổi ảnh
 
-| Chức năng | Method | Endpoint | Quyền |
-|---|---|---|---|
-| Upload avatar | POST | `/api/v1/images/avatars` | Đăng nhập |
-| Upload ảnh sản phẩm | POST | `/api/v1/images/products` | ADMIN |
-| Upload ảnh danh mục cha/con | POST | `/api/v1/images/categories` | ADMIN |
+| Chức năng                   | Method | Endpoint                    | Quyền     |
+| --------------------------- | ------ | --------------------------- | --------- |
+| Upload avatar               | POST   | `/api/v1/images/avatars`    | Đăng nhập |
+| Upload ảnh sản phẩm         | POST   | `/api/v1/images/products`   | ADMIN     |
+| Upload ảnh danh mục cha/con | POST   | `/api/v1/images/categories` | ADMIN     |
 
 Body là `multipart/form-data` gồm **một file**, field tên `file`; không gửi thêm
 field khác. JPEG, PNG, GIF, WebP tối đa **5 MB**; backend kiểm tra chữ ký nội dung
@@ -240,12 +281,12 @@ Ví dụ `API_ORIGIN = "http://localhost:8080"`, không thêm `/api/v1`.
 
 Luồng **chọn file từ máy**: upload → lấy `imageUrl` → gửi JSON để lưu bản ghi:
 
-| Đích | API lưu ảnh | JSON |
-|---|---|---|
-| Avatar của mình | `PATCH /api/v1/users/me` | `{ "avatarUrl": "<imageUrl>" }` |
-| Sản phẩm | `POST /api/v1/products` hoặc `PATCH /api/v1/products/:id` | Thêm `imageUrl` vào body |
-| Danh mục con | `POST /api/v1/categories` hoặc `PATCH /api/v1/categories/:id` | Thêm `imageUrl` vào body |
-| Danh mục cha | `POST /api/v1/category-parents` hoặc `PATCH /api/v1/category-parents/:id` | Thêm `imageUrl` vào body |
+| Đích            | API lưu ảnh                                                               | JSON                            |
+| --------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| Avatar của mình | `PATCH /api/v1/users/me`                                                  | `{ "avatarUrl": "<imageUrl>" }` |
+| Sản phẩm        | `POST /api/v1/products` hoặc `PATCH /api/v1/products/:id`                 | Thêm `imageUrl` vào body        |
+| Danh mục con    | `POST /api/v1/categories` hoặc `PATCH /api/v1/categories/:id`             | Thêm `imageUrl` vào body        |
+| Danh mục cha    | `POST /api/v1/category-parents` hoặc `PATCH /api/v1/category-parents/:id` | Thêm `imageUrl` vào body        |
 
 Luồng **nhập URL ảnh công khai từ hosting**: gửi trực tiếp URL HTTP(S) vào
 `imageUrl` hoặc `avatarUrl` của API ở bảng trên. Backend lưu tham chiếu URL,
@@ -280,3 +321,46 @@ async function changeAvatar(file: File, accessToken: string) {
 
 Upload không tự gắn ảnh vào bản ghi. File đã upload vẫn tồn tại nếu người dùng
 hủy form, lưu bản ghi lỗi hoặc thay ảnh; chưa có API dọn/xóa file.
+
+## 9. Field bổ sung theo thiết kế database
+
+Các endpoint, role `USER/ADMIN`, trạng thái và giá `totalPrice/unitPrice` giữ nguyên.
+Response có thêm field; client cũ có thể tiếp tục gửi payload cũ.
+
+- Đăng ký và `PATCH /users/me`: nhận thêm `fullName`, `phone`, `address`, đều tùy chọn
+  và cho phép `null` để xóa. `SafeUser` trong đăng ký, đăng nhập, hồ sơ trả thêm ba
+  field này, không trả mật khẩu băm.
+- Tạo/sửa danh mục: nhận thêm `slug` chữ thường không dấu, số và dấu gạch ngang,
+  tối đa 255 ký tự, duy nhất toàn hệ thống. Khi tạo không truyền, backend sinh từ tên
+  kèm UUID. Đổi tên không tự đổi slug; `slug` không nhận `null`.
+- Tạo/sửa sản phẩm: nhận thêm `sku`, `brand`, `discountPrice`, `stockQuantity`,
+  `images`, `warrantyMonths`, `specifications`. Ngoài `images`, các field mới có thể
+  `null`. Giá giảm là chuỗi số nguyên VND, không âm và không vượt giá gốc; tồn kho
+  và số tháng bảo hành là số nguyên không âm. SKU không được trùng; trả `409` khi trùng.
+- `images` là mảng URL HTTP(S) hoặc đường dẫn ảnh hợp lệ từ API upload; gửi `[]`
+  để xóa bộ sưu tập. Nó độc lập với ảnh đại diện `imageUrl`. Khi tạo không truyền
+  `images`, backend lấy `[imageUrl]` nếu có ảnh đại diện, ngược lại `[]`.
+- `specifications` là object JSON theo các key trong thiết kế cho CPU, Mainboard,
+  RAM, GPU, PSU, Storage, Case, CPU Cooler; giữ nguyên kiểu số, boolean và mảng.
+  Backend kiểm tra kiểu object, chưa kiểm tra đủ key theo loại linh kiện hoặc chạy
+  thuật toán tương thích. Dữ liệu cũ chưa biết thông số trả `null`.
+
+`POST /orders/checkout` có thể không gửi body như trước, hoặc gửi:
+
+```json
+{
+  "shippingName": "Nguyễn Văn A",
+  "shippingPhone": "0901234567",
+  "shippingAddress": "123 Nguyễn Trãi, Hà Nội",
+  "paymentMethod": "COD"
+}
+```
+
+Các field đều tùy chọn; thiếu hoặc `null` được lưu `null`, không tự lấy thông tin
+từ hồ sơ. `paymentMethod` nhận `COD` hoặc `VNPAY`; chưa có tích hợp cổng thanh toán.
+Response đơn/giỏ có thêm `orderCode` duy nhất dạng `DH-<UUID>` và các field giao hàng,
+thanh toán. Không cần gửi mã đơn khi checkout. Giỏ chưa tồn tại vẫn trả object rỗng
+như trước. Giá checkout tiếp tục lấy `price`, chưa áp dụng `discountPrice` hoặc trừ tồn kho.
+
+`reviews`, `warranty_tickets`, `product_recommendations` hiện chỉ có schema/entity,
+chưa có endpoint. Giỏ hàng vẫn dùng `Order/OrderItem` với trạng thái `AddingItem`.

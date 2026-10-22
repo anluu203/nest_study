@@ -16,6 +16,9 @@ export interface SafeUser {
   username: string;
   email: string;
   avatarUrl: string | null;
+  fullName: string | null;
+  phone: string | null;
+  address: string | null;
   role: UserRole;
   createdAt: Date;
   updatedAt: Date;
@@ -40,6 +43,9 @@ export class UsersService {
       email,
       passwordHash: await bcrypt.hash(createUserDto.password, 12),
       role: UserRole.USER,
+      fullName: createUserDto.fullName?.trim() || null,
+      phone: createUserDto.phone?.trim() || null,
+      address: createUserDto.address?.trim() || null,
     });
 
     try {
@@ -79,6 +85,11 @@ export class UsersService {
     if (updateUserDto.avatarUrl !== undefined) {
       user.avatarUrl = updateUserDto.avatarUrl ?? null;
     }
+    for (const field of ['fullName', 'phone', 'address'] as const) {
+      if (updateUserDto[field] !== undefined) {
+        user[field] = updateUserDto[field]?.trim() || null;
+      }
+    }
     return this.toSafeUser(await this.userRepository.save(user));
   }
 
@@ -88,6 +99,9 @@ export class UsersService {
       username: user.username,
       email: user.email,
       avatarUrl: user.avatarUrl ?? null,
+      fullName: user.fullName ?? null,
+      phone: user.phone ?? null,
+      address: user.address ?? null,
       role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,

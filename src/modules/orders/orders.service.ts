@@ -13,6 +13,7 @@ import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { OrderItem } from './entities/order-item.entity';
 import { Order } from './entities/order.entity';
 import { OrderStatus } from './enums/order-status.enum';
+import { CheckoutDto } from './dto/checkout.dto';
 
 @Injectable()
 export class OrdersService {
@@ -124,7 +125,7 @@ export class OrdersService {
     });
   }
 
-  async checkout(userId: string): Promise<Order> {
+  async checkout(userId: string, dto: CheckoutDto = {}): Promise<Order> {
     return this.dataSource.transaction(async (manager) => {
       const cart = await this.requireActiveCart(manager, userId);
       const itemRepository = manager.getRepository(OrderItem);
@@ -145,6 +146,10 @@ export class OrdersService {
       await itemRepository.save(items);
       cart.totalPrice = this.calculateTotal(items);
       cart.status = OrderStatus.PROCESSING;
+      cart.shippingName = dto.shippingName?.trim() || null;
+      cart.shippingPhone = dto.shippingPhone?.trim() || null;
+      cart.shippingAddress = dto.shippingAddress?.trim() || null;
+      cart.paymentMethod = dto.paymentMethod ?? null;
       await manager.getRepository(Order).save(cart);
       return this.loadOrder(cart.id, manager);
     });

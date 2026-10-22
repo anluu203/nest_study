@@ -12,8 +12,8 @@ export default new DataSource({
   database: process.env.DB_DATABASE || 'study_db',
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/migrations/*.ts'],
-  ssl: {
-    rejectUnauthorized: true,
-    ca: readFileSync('./ca.pem').toString(),
-  },
+  // ssl: {
+  //   rejectUnauthorized: true,
+  //   ca: readFileSync('./ca.pem').toString(),
+  // },
 });

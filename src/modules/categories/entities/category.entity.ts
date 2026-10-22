@@ -14,12 +14,16 @@ import { Product } from '../../products/entities/product.entity';
 
 @Entity('categories')
 @Unique('UQ_categories_parent_name', ['parentId', 'name'])
+@Unique('UQ_categories_slug', ['slug'])
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Column({ length: 150 })
   name!: string;
+
+  @Column({ length: 255 })
+  slug!: string;
 
   @Column({ type: 'text', nullable: true })
   description!: string | null;

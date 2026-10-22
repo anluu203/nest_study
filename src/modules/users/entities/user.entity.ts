@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { UserRole } from '../../../core/constants/user-role.enum';
 import { Order } from '../../orders/entities/order.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { WarrantyTicket } from '../../warranties/entities/warranty-ticket.entity';
 
 @Entity('user')
 @Unique('UQ_user_email', ['email'])
@@ -18,6 +20,15 @@ export class User {
 
   @Column({ length: 100 })
   username!: string;
+
+  @Column({ type: 'varchar', length: 200, nullable: true })
+  fullName!: string | null;
+
+  @Column({ type: 'varchar', length: 30, nullable: true })
+  phone!: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  address!: string | null;
 
   @Column({ length: 320 })
   email!: string;
@@ -31,7 +42,6 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    enumName: 'user_role_enum',
     default: UserRole.USER,
   })
   role!: UserRole;
@@ -44,4 +54,10 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders!: Order[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
+
+  @OneToMany(() => WarrantyTicket, (ticket) => ticket.user)
+  warrantyTickets!: WarrantyTicket[];
 }

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Category } from '../categories/entities/category.entity';
@@ -19,6 +24,7 @@ export class ProductsService {
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {
+    this.assertDiscount(dto.price, dto.discountPrice);
     await this.assertCategory(dto.categoryId);
     const product = this.repository.create({
       name: dto.name.trim(),
@@ -27,8 +33,15 @@ export class ProductsService {
       price: dto.price,
       categoryId: dto.categoryId,
       isActive: true,
+      sku: dto.sku?.trim() || null,
+      brand: dto.brand?.trim() || null,
+      discountPrice: dto.discountPrice ?? null,
+      stockQuantity: dto.stockQuantity ?? null,
+      warrantyMonths: dto.warrantyMonths ?? null,
+      images: dto.images ?? (dto.imageUrl ? [dto.imageUrl.trim()] : []),
+      specifications: dto.specifications ?? null,
     });
-    return this.repository.save(product);
+    return this.saveProduct(this.repository, product);
   }
 
   async findAll(query: ProductQueryDto) {
@@ -91,6 +104,27 @@ export class ProductsService {
       });
       if (!product) throw new NotFoundException('Product not found');
 
+      this.assertDiscount(
+        dto.price ?? product.price,
+        dto.discountPrice !== undefined
+          ? dto.discountPrice
+          : product.discountPrice,
+      );
+      for (const field of ['sku', 'brand'] as const) {
+        if (dto[field] !== undefined)
+          product[field] = dto[field]?.trim() || null;
+      }
+      for (const field of [
+        'discountPrice',
+        'stockQuantity',
+        'warrantyMonths',
+        'specifications',
+      ] as const) {
+        if (dto[field] !== undefined)
+          Object.assign(product, { [field]: dto[field] });
+      }
+      if (dto.images !== undefined) product.images = dto.images;
+
       if (dto.categoryId !== undefined) {
         const categoryExists = await manager
           .getRepository(Category)
@@ -110,7 +144,7 @@ export class ProductsService {
         product.price = dto.price;
         await this.refreshActiveCartPrices(manager, id, dto.price);
       }
-      await productRepository.save(product);
+      await this.saveProduct(productRepository, product);
     });
     return this.findOne(id);
   }
@@ -127,6 +161,39 @@ export class ProductsService {
       !(await this.dataSource.getRepository(Category).exists({ where: { id } }))
     ) {
       throw new NotFoundException('Category not found');
+    }
+  }
+
+  private assertDiscount(
+    price: string,
+    discount: string | null | undefined,
+  ): void {
+    if (
+      discount != null &&
+      (BigInt(discount) < 0n || BigInt(discount) > BigInt(price))
+    ) {
+      throw new BadRequestException(
+        'discountPrice must be between zero and price',
+      );
+    }
+  }
+
+  private async saveProduct(
+    repository: Repository<Product>,
+    product: Product,
+  ): Promise<Product> {
+    try {
+      return await repository.save(product);
+    } catch (error) {
+      if (
+        (error as { driverError?: { code?: string; constraint?: string } })
+          ?.driverError?.constraint === 'UQ_products_sku' &&
+        (error as { driverError?: { code?: string } }).driverError?.code ===
+          '23505'
+      ) {
+        throw new ConflictException('Product SKU already exists');
+      }
+      throw error;
     }
   }
 

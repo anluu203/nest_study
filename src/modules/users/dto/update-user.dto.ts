@@ -1,8 +1,9 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 import { IsImageUrl } from '../../../core/validators/is-image-url.decorator';
+import { ProfileFieldsDto } from './profile-fields.dto';
 
-export class UpdateUserDto {
+export class UpdateUserDto extends ProfileFieldsDto {
   @ApiPropertyOptional({ example: 'nguyenvana' })
   @IsOptional()
   @IsString()

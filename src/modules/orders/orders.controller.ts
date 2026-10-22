@@ -10,12 +10,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../core/decorators/current-user.decorator';
 import type { AuthUser } from '../../core/types/auth-user.type';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 import { OrdersService } from './orders.service';
+import { CheckoutDto } from './dto/checkout.dto';
 
 @ApiTags('Orders')
 @ApiBearerAuth('JWT-auth')
@@ -57,8 +58,9 @@ export class OrdersController {
   }
 
   @Post('checkout')
-  checkout(@CurrentUser() user: AuthUser) {
-    return this.service.checkout(user.sub);
+  @ApiBody({ type: CheckoutDto, required: false })
+  checkout(@CurrentUser() user: AuthUser, @Body() dto: CheckoutDto = {}) {
+    return this.service.checkout(user.sub, dto);
   }
 
   @Get()

@@ -5,6 +5,8 @@ import {
   IsUUID,
   MaxLength,
   MinLength,
+  Matches,
+  ValidateIf,
 } from 'class-validator';
 import { IsImageUrl } from '../../../core/validators/is-image-url.decorator';
 
@@ -14,6 +16,13 @@ export class CreateCategoryDto {
   @MinLength(1)
   @MaxLength(150)
   name!: string;
+
+  @ApiPropertyOptional({ example: 'cpu' })
+  @ValidateIf((_object, value) => value !== undefined)
+  @IsString()
+  @MaxLength(255)
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+  slug?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

@@ -11,6 +11,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryParent } from './entities/category-parent.entity';
 import { Category } from './entities/category.entity';
+import { randomUUID } from 'node:crypto';
+import { categorySlug } from '../../core/utils/category-slug';
 
 @Injectable()
 export class CategoriesService {
@@ -25,8 +27,11 @@ export class CategoriesService {
 
   async create(dto: CreateCategoryDto): Promise<Category> {
     await this.assertParent(dto.parentId);
+    const id = randomUUID();
     return this.save(
       this.repository.create({
+        id,
+        slug: dto.slug ?? categorySlug(dto.name, id),
         name: dto.name.trim(),
         description: dto.description?.trim() || null,
         imageUrl: dto.imageUrl ?? null,
@@ -60,6 +65,7 @@ export class CategoriesService {
       entity.parentId = dto.parentId;
     }
     if (dto.name !== undefined) entity.name = dto.name.trim();
+    if (dto.slug !== undefined) entity.slug = dto.slug;
     if (dto.description !== undefined) {
       entity.description = dto.description.trim() || null;
     }
@@ -99,7 +105,7 @@ export class CategoriesService {
           '23505'
       ) {
         throw new ConflictException(
-          'Category name already exists in this parent category',
+          'Category slug or name in this parent category already exists',
         );
       }
       throw error;
