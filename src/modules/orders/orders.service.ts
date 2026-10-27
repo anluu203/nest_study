@@ -14,6 +14,7 @@ import { OrderItem } from './entities/order-item.entity';
 import { Order } from './entities/order.entity';
 import { OrderStatus } from './enums/order-status.enum';
 import { CheckoutDto } from './dto/checkout.dto';
+import { WarrantiesService } from '../warranties/warranties.service';
 
 @Injectable()
 export class OrdersService {
@@ -21,6 +22,7 @@ export class OrdersService {
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
     private readonly dataSource: DataSource,
+    private readonly warrantiesService: WarrantiesService,
   ) {}
 
   async getCart(userId: string) {
@@ -236,6 +238,9 @@ export class OrdersService {
       }
       order.status = target;
       await repository.save(order);
+      if (target === OrderStatus.DONE) {
+        await this.warrantiesService.registerDeliveredOrder(manager, order);
+      }
       return this.loadOrder(order.id, manager);
     });
   }

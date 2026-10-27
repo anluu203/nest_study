@@ -40,6 +40,8 @@ async function bootstrap() {
     .addTag('Images', 'Image uploads for avatars and the admin catalog')
     .addTag('Orders', 'Cart, checkout and customer orders')
     .addTag('Admin Orders', 'Administrative order management')
+    .addTag('Warranties', 'Customer warranty lookup and requests')
+    .addTag('Admin Warranties', 'Warranty registrations and processing')
     .addBearerAuth(
       {
         type: 'http',

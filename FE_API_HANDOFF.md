@@ -362,5 +362,16 @@ Response đơn/giỏ có thêm `orderCode` duy nhất dạng `DH-<UUID>` và cá
 thanh toán. Không cần gửi mã đơn khi checkout. Giỏ chưa tồn tại vẫn trả object rỗng
 như trước. Giá checkout tiếp tục lấy `price`, chưa áp dụng `discountPrice` hoặc trừ tồn kho.
 
-`reviews`, `warranty_tickets`, `product_recommendations` hiện chỉ có schema/entity,
-chưa có endpoint. Giỏ hàng vẫn dùng `Order/OrderItem` với trạng thái `AddingItem`.
+`reviews`, `product_recommendations` hiện chỉ có schema/entity, chưa có endpoint.
+Giỏ hàng vẫn dùng `Order/OrderItem` với trạng thái `AddingItem`.
+
+## 10. Bảo hành sản phẩm
+
+Đã có API user và admin cho tra cứu thiết bị, gửi yêu cầu, lịch sử xử lý,
+lọc/phân trang, bộ đếm trạng thái và đăng ký thiết bị cho đơn cũ.
+Đơn chuyển `Done` tự tạo hồ sơ theo từng thiết bị đã giao trong cùng transaction.
+
+Xem [WARRANTY_API_HANDOFF.md](./WARRANTY_API_HANDOFF.md) để biết endpoint, payload,
+response, phân quyền, quy tắc thời hạn và hướng dẫn thay service mock trong FE.
+Lưu ý `productId` trong API bảo hành là ID hồ sơ thiết bị; `catalogProductId` mới
+là ID catalog. `id` phiếu là UUID, `ticketCode` là mã BH dùng để hiển thị.

@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "snapshotDate": "2026-10-28",
+  "categoryParents": [
+    {
+      "id": "9d4b3063-b86d-4033-856a-283bdcd6e0a1",
+      "name": "Lưu trữ & Phụ kiện",
+      "imageUrl": null,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Thiết bị lưu trữ và phụ kiện hỗ trợ hệ thống máy tính."
+    },
+    {
+      "id": "a52f7c69-6373-452f-8cec-f98c3b55aa1e",
+      "name": "Thiết bị ngoại vi",
+      "imageUrl": null,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Thiết bị kết nối ngoài phục vụ thao tác và hiển thị."
+    },
+    {
+      "id": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "name": "Linh kiện máy tính",
+      "imageUrl": null,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Các linh kiện dùng để lắp ráp và nâng cấp máy tính."
+    }
+  ],
+  "categories": [
+    {
+      "id": "00f361b7-c61d-4b1a-b42d-47dd63791d7b",
+      "name": "Ổ cứng SSD",
+      "slug": "o-cung-ssd-00f361b7-c61d-4b1a-b42d-47dd63791d7b",
+      "imageUrl": null,
+      "parentId": "9d4b3063-b86d-4033-856a-283bdcd6e0a1",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Ổ cứng thể rắn tốc độ cao chuẩn SATA và NVMe."
+    },
+    {
+      "id": "043eba75-aada-4a4a-9b3e-d678e5178f2b",
+      "name": "Tản nhiệt",
+      "slug": "tan-nhiet-043eba75-aada-4a4a-9b3e-d678e5178f2b",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Giải pháp làm mát CPU và thùng máy."
+    },
+    {
+      "id": "348e9d9d-f256-40a7-bbee-fcbcf3134b7c",
+      "name": "RAM - Bộ nhớ trong",
+      "slug": "ram-bo-nho-trong-348e9d9d-f256-40a7-bbee-fcbcf3134b7c",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Bộ nhớ RAM cho máy tính để bàn và máy trạm."
+    },
+    {
+      "id": "4220eac6-3a31-4db1-a110-931ff2a4b00e",
+      "name": "Nguồn máy tính",
+      "slug": "nguon-may-tinh-4220eac6-3a31-4db1-a110-931ff2a4b00e",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Bộ nguồn cung cấp điện ổn định cho toàn hệ thống."
+    },
+    {
+      "id": "9261565f-5e30-411d-93a5-d62ee0427e16",
+      "name": "Màn hình",
+      "slug": "man-hinh-9261565f-5e30-411d-93a5-d62ee0427e16",
+      "imageUrl": null,
+      "parentId": "a52f7c69-6373-452f-8cec-f98c3b55aa1e",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Màn hình máy tính phục vụ học tập, làm việc và giải trí."
+    },
+    {
+      "id": "ad190523-69a3-4f44-892d-6fef0c5be448",
+      "name": "Mainboard - Bo mạch chủ",
+      "slug": "mainboard-bo-mach-chu-ad190523-69a3-4f44-892d-6fef0c5be448",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Bo mạch chủ kết nối và điều khiển các linh kiện."
+    },
+    {
+      "id": "b67c1d82-2a72-4f24-b590-ac1e4aa53d11",
+      "name": "VGA - Card màn hình",
+      "slug": "vga-card-man-hinh-b67c1d82-2a72-4f24-b590-ac1e4aa53d11",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Card đồ họa phục vụ chơi game và công việc sáng tạo."
+    },
+    {
+      "id": "f5ba555d-4ff9-4912-8feb-2f8bfba556ce",
+      "name": "CPU - Bộ vi xử lý",
+      "slug": "cpu-bo-vi-xu-ly-f5ba555d-4ff9-4912-8feb-2f8bfba556ce",
+      "imageUrl": null,
+      "parentId": "fbdb88b9-9374-425d-a946-45de897da54a",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Bộ xử lý trung tâm dành cho máy tính để bàn."
+    },
+    {
+      "id": "fa6dd9a3-1d7d-47b1-845f-a4de4cb56f39",
+      "name": "Chuột",
+      "slug": "chuot-fa6dd9a3-1d7d-47b1-845f-a4de4cb56f39",
+      "imageUrl": null,
+      "parentId": "a52f7c69-6373-452f-8cec-f98c3b55aa1e",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Chuột máy tính có dây và không dây."
+    },
+    {
+      "id": "fc7a5970-c827-4d80-aac0-8f479c813a8c",
+      "name": "Bàn phím",
+      "slug": "ban-phim-fc7a5970-c827-4d80-aac0-8f479c813a8c",
+      "imageUrl": null,
+      "parentId": "a52f7c69-6373-452f-8cec-f98c3b55aa1e",
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-15T16:49:18.466064",
+      "description": "Bàn phím cơ và bàn phím văn phòng."
+    }
+  ],
+  "products": [
+    {
+      "id": "15470a8b-386b-46b9-a9a3-2193bce09674",
+      "sku": null,
+      "name": "Keychron K8 Pro",
+      "brand": null,
+      "price": 2490000,
+      "images": ["https://owlgaming.vn/wp-content/uploads/2022/01/2-4.png"],
+      "imageUrl": "https://owlgaming.vn/wp-content/uploads/2022/01/2-4.png",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:06:44.900608",
+      "categoryId": "fc7a5970-c827-4d80-aac0-8f479c813a8c",
+      "description": "Bàn phím cơ không dây layout TKL, hỗ trợ hot-swap.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "1fc1db62-6d77-41bc-99f5-eb7bb7980abf",
+      "sku": null,
+      "name": "Gigabyte GeForce RTX 4070 SUPER WINDFORCE OC",
+      "brand": null,
+      "price": 17990000,
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcDm6y_LYzS4pZzKyNXhG4xH4kxsF1LV7o6Jfpx-pVKw&s=10"
+      ],
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcDm6y_LYzS4pZzKyNXhG4xH4kxsF1LV7o6Jfpx-pVKw&s=10",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:06:12.033277",
+      "categoryId": "b67c1d82-2a72-4f24-b590-ac1e4aa53d11",
+      "description": "Card đồ họa 12GB GDDR6X, phù hợp chơi game độ phân giải 2K.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "343cfad3-375f-45a5-8e5a-0c6a7727eceb",
+      "sku": null,
+      "name": "LG UltraGear 27GP850-B 27 inch",
+      "brand": null,
+      "price": 7490000,
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGm3KZskTJ9o72ToLGVY_gfrDvV5GsQX9pdN44H9GcCwzB10xhanvvKGU&s=10"
+      ],
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGm3KZskTJ9o72ToLGVY_gfrDvV5GsQX9pdN44H9GcCwzB10xhanvvKGU&s=10",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:05:50.012611",
+      "categoryId": "9261565f-5e30-411d-93a5-d62ee0427e16",
+      "description": "Màn hình gaming Nano IPS 2K, tần số quét 180Hz.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "34a8d279-ba2a-4d04-8ab6-d68ee5003c14",
+      "sku": null,
+      "name": "Corsair RM750e 750W 80 Plus Gold",
+      "brand": null,
+      "price": 2790000,
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/1024x1024/100/329/122/products/nguon-may-tinh-corsair-rm750e-pcie5-750w-80-plus-gold-cp-9020262-na-2.jpg?v=1743638463780"
+      ],
+      "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/329/122/products/nguon-may-tinh-corsair-rm750e-pcie5-750w-80-plus-gold-cp-9020262-na-2.jpg?v=1743638463780",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:05:16.837888",
+      "categoryId": "4220eac6-3a31-4db1-a110-931ff2a4b00e",
+      "description": "Nguồn máy tính công suất 750W, chuẩn hiệu suất 80 Plus Gold.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "4851e710-a0d4-4c57-b9ee-1274c47ce18a",
+      "sku": null,
+      "name": "Intel Core i5-14600K",
+      "brand": null,
+      "price": 7990000,
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzCXfW17pV22x0OPX21FRsdrtzzhVZmgbBHe1A6yczbw&s=10"
+      ],
+      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzCXfW17pV22x0OPX21FRsdrtzzhVZmgbBHe1A6yczbw&s=10",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:04:40.728753",
+      "categoryId": "f5ba555d-4ff9-4912-8feb-2f8bfba556ce",
+      "description": "CPU Intel Core i5 thế hệ 14, 14 nhân 20 luồng, phù hợp gaming và làm việc.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "6aaf20e9-68ab-4ef6-b46b-a5b531375be8",
+      "sku": null,
+      "name": "Samsung 990 PRO 1TB NVMe",
+      "brand": null,
+      "price": 2990000,
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/grande/100/329/122/products/ssd-samsung-990-pro-pcie-gen-4-0-x4-nvme-v-nand-m-2-2280-1tb-mz-v9p1t0bw-2.jpg?v=1751994033067"
+      ],
+      "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/329/122/products/ssd-samsung-990-pro-pcie-gen-4-0-x4-nvme-v-nand-m-2-2280-1tb-mz-v9p1t0bw-2.jpg?v=1751994033067",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:04:05.239115",
+      "categoryId": "00f361b7-c61d-4b1a-b42d-47dd63791d7b",
+      "description": "SSD NVMe PCIe 4.0 dung lượng 1TB, tốc độ đọc lên đến 7450MB/s.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "7ae3b01d-7f06-4c89-aab3-d11d00bd91d2",
+      "sku": null,
+      "name": "ASUS TUF Gaming B760M-PLUS WiFi",
+      "brand": null,
+      "price": 4590000,
+      "images": [
+        "https://nguyencongpc.vn/media/product/25512-screenshot_1691565961.png"
+      ],
+      "imageUrl": "https://nguyencongpc.vn/media/product/25512-screenshot_1691565961.png",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:03:40.41746",
+      "categoryId": "ad190523-69a3-4f44-892d-6fef0c5be448",
+      "description": "Mainboard Micro-ATX chipset B760, hỗ trợ DDR5 và Wi-Fi.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "9fbd1243-61d8-4de2-82e4-ab87b8b68c6a",
+      "sku": null,
+      "name": "AMD Ryzen 7 7800X3D",
+      "brand": null,
+      "price": 9990000,
+      "images": [
+        "https://images-na.ssl-images-amazon.com/images/I/61kuNFhOiwL.jpg"
+      ],
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61kuNFhOiwL.jpg",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:03:02.566513",
+      "categoryId": "f5ba555d-4ff9-4912-8feb-2f8bfba556ce",
+      "description": "CPU 8 nhân 16 luồng với 3D V-Cache, tối ưu cho máy tính chơi game.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "a8e48a15-f477-4641-af83-f0dc469de7a7",
+      "sku": null,
+      "name": "DeepCool AK620 Digital",
+      "brand": null,
+      "price": 1890000,
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/1024x1024/100/329/122/products/tan-nhiet-khi-deepcool-ak620-digital-r-ak620-bkadmn-g-1-4d663d30-eb6c-442a-b108-08b0fa08bdac.jpg?v=1748879468820"
+      ],
+      "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/329/122/products/tan-nhiet-khi-deepcool-ak620-digital-r-ak620-bkadmn-g-1-4d663d30-eb6c-442a-b108-08b0fa08bdac.jpg?v=1748879468820",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:02:06.473928",
+      "categoryId": "043eba75-aada-4a4a-9b3e-d678e5178f2b",
+      "description": "Tản nhiệt khí hai tháp, tích hợp màn hình hiển thị nhiệt độ.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    },
+    {
+      "id": "cc290e39-d185-4359-9bb7-fb433e4b0e53",
+      "sku": null,
+      "name": "Kingston Fury Beast 32GB DDR5 6000MHz",
+      "brand": null,
+      "price": 2890000,
+      "images": [
+        "https://bizweb.dktcdn.net/100/329/122/products/ram-pc-kingston-fury-beast-rgb-32gb-6000mhz-ddr5-2x16gb-kf560c30bbak2-32-03.jpg?v=1722240800637"
+      ],
+      "imageUrl": "https://bizweb.dktcdn.net/100/329/122/products/ram-pc-kingston-fury-beast-rgb-32gb-6000mhz-ddr5-2x16gb-kf560c30bbak2-32-03.jpg?v=1722240800637",
+      "isActive": true,
+      "createdAt": "2026-10-15T16:49:07.834981",
+      "updatedAt": "2026-10-16T15:01:13.977806",
+      "categoryId": "348e9d9d-f256-40a7-bbee-fcbcf3134b7c",
+      "description": "Bộ RAM DDR5 gồm 2 thanh 16GB, tốc độ 6000MHz.",
+      "discountPrice": null,
+      "stockQuantity": null,
+      "specifications": null,
+      "warrantyMonths": null
+    }
+  ]
+}

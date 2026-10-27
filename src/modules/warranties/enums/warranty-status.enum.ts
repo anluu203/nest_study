@@ -1,0 +1,6 @@
+export enum WarrantyStatus {
+  RECEIVED = 'RECEIVED',
+  CHECKING = 'CHECKING',
+  REPAIRING = 'REPAIRING',
+  COMPLETED = 'COMPLETED',
+}

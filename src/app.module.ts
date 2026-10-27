@@ -13,8 +13,8 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './core/guards/jwt-auth.guard';
 import { RolesGuard } from './core/guards/roles.guard';
 import { DomainExceptionFilter } from './core/filters/domain-exception.filter';
-import { readFileSync } from 'node:fs';
 import { ImagesModule } from './modules/images/images.module';
+import { WarrantiesModule } from './modules/warranties/warranties.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -42,6 +42,7 @@ import { ImagesModule } from './modules/images/images.module';
     ProductsModule,
     OrdersModule,
     ImagesModule,
+    WarrantiesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -18,6 +18,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:database": "node scripts/test-database-alignment.js",
+    "test:warranties": "node scripts/test-warranties.js",
+    "test:seed-catalog": "node scripts/test-seed-catalog.js",
     "seed:catalog": "node scripts/seed-catalog.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source.ts",

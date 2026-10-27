@@ -5,6 +5,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -12,19 +13,20 @@ import {
 import { User } from '../../users/entities/user.entity';
 import { Product } from '../../products/entities/product.entity';
 import { Order } from '../../orders/entities/order.entity';
-
-export enum WarrantyStatus {
-  RECEIVED = 'RECEIVED',
-  CHECKING = 'CHECKING',
-  REPAIRING = 'REPAIRING',
-  COMPLETED = 'COMPLETED',
-}
+import { WarrantyProduct } from './warranty-product.entity';
+import { WarrantyEvent } from './warranty-event.entity';
+import { WarrantyStatus } from '../enums/warranty-status.enum';
+export { WarrantyStatus } from '../enums/warranty-status.enum';
 
 @Entity('warranty_tickets')
 @Unique('UQ_warranty_ticket_code', ['ticketCode'])
 @Index('IDX_warranty_product', ['productId'])
 @Index('IDX_warranty_user', ['userId'])
 @Index('IDX_warranty_order', ['orderCode'])
+@Index('UQ_warranty_active_unit', ['warrantyProductId'], {
+  unique: true,
+  where: `"warrantyProductId" IS NOT NULL AND "status" <> 'COMPLETED'`,
+})
 export class WarrantyTicket {
   @PrimaryGeneratedColumn('uuid', {
     primaryKeyConstraintName: 'PK_warranty_tickets',
@@ -33,6 +35,23 @@ export class WarrantyTicket {
 
   @Column({ length: 39, default: () => "('BH-'|| (uuid_generate_v4()))" })
   ticketCode!: string;
+
+  // Nullable only for tickets created before the warranty API was introduced.
+  @Column({ type: 'uuid', nullable: true })
+  warrantyProductId!: string | null;
+
+  @ManyToOne(() => WarrantyProduct, (product) => product.tickets, {
+    nullable: true,
+    onDelete: 'RESTRICT',
+  })
+  @JoinColumn({
+    name: 'warrantyProductId',
+    foreignKeyConstraintName: 'FK_warranty_ticket_unit',
+  })
+  warrantyProduct!: WarrantyProduct | null;
+
+  @OneToMany(() => WarrantyEvent, (event) => event.ticket)
+  events!: WarrantyEvent[];
 
   @Column('uuid')
   productId!: string;

@@ -33,16 +33,53 @@ npm run migration:generate -- src/migrations/TenMigration
 
 ## Seed catalog
 
-Sau khi chạy migration, import dữ liệu mẫu bằng lệnh:
+Sau khi chạy migration, import bản dữ liệu catalog lấy từ database local
+`study_db` ngày 28/10/2026 bằng lệnh:
 
 ```bash
 npm run seed:catalog
 ```
 
-Script đọc cấu hình `DB_*` từ `.env` tại thư mục gốc dự án và sử dụng
-chứng chỉ SSL `ca.pem` giống backend. Kiểm tra database đích được in ra khi chạy.
-Dữ liệu mẫu gồm 3 nhóm danh mục, 10 danh mục và 10 sản phẩm. Có thể chạy lại:
-danh mục được cập nhật mô tả, sản phẩm đã tồn tại theo tên sẽ được bỏ qua.
+Script đọc cấu hình `DB_*` từ `.env` tại thư mục gốc dự án; biến môi trường
+đã thiết lập trong terminal được ưu tiên. Ví dụ database local:
+
+```dotenv
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=<mat-khau-postgres-tren-may-dich>
+DB_DATABASE=study_db
+DB_SSL=false
+```
+
+Mặc định không dùng SSL. Nếu database đích yêu cầu SSL, đặt `DB_SSL=true`;
+script dùng `DB_SSL_CA_FILE` nếu có, nếu không dùng `ca.pem` tại gốc dự án
+(hoặc CA mặc định của Node.js khi không có file này).
+Kiểm tra database đích được in ra khi chạy. Có thể kiểm tra trước mà không
+lưu thay đổi bằng `npm run seed:catalog -- --dry-run`.
+
+Dữ liệu nằm trong `scripts/data/catalog.json`, gồm 3 danh mục cha, 10 danh mục con
+và 10 sản phẩm. Bản này giữ nguyên URL ảnh, `slug`, giá, trạng thái, các trường
+SKU/thương hiệu/giảm giá/tồn kho/bảo hành/thông số, `images`, giá trị `null` và
+thời gian tạo/cập nhật từ database nguồn. Hiện tại ảnh danh mục cha/con đều là
+`null`; sản phẩm dùng URL ảnh HTTPS và `images` tương ứng trong database.
+
+Trên database trống, script giữ UUID nguồn. Trên database đã seed trước đó,
+script đối chiếu ID hoặc tên danh mục cha, tên danh mục con trong cùng cha,
+SKU hoặc tên sản phẩm trong cùng danh mục; giữ ID và `createdAt` đã tồn tại,
+ánh xạ lại quan hệ, rồi cập nhật các trường còn lại theo bản dữ liệu, kể cả
+`updatedAt`. Bản ghi không đổi sẽ không bị ghi lại. Dữ liệu ngoài bản seed được
+giữ lại. Nếu có nhiều bản ghi khớp cùng một đối tượng, script báo lỗi để xử lý
+xung đột; mọi thay đổi nằm trong một transaction và được rollback khi có lỗi.
+
+Khi chuyển sang máy khác, mang theo cả script và file JSON, cấu hình `.env`
+của máy đích, chạy `npm run migration:run`, rồi `npm run seed:catalog`.
+Đây là bản dữ liệu cố định, không tự đọc lại database nguồn khi chạy seed.
+
+`npm run test:seed-catalog` kiểm tra import, chạy lại, cập nhật seed cũ và rollback
+trên các bảng tạm sao chép cấu trúc từ database đã migration. Kiểm thử dùng cùng
+cấu hình `DB_*`, không ghi vào các bảng catalog thật; bảng tạm được tự dọn khi
+ngắt kết nối.
 
 ## Phân quyền admin
 
@@ -121,11 +158,27 @@ dùng `totalPrice`, trạng thái đơn tiếp tục dùng bộ hiện tại. Ch
 vẫn hoạt động; có thể gửi thông tin giao hàng và phương thức thanh toán tùy chọn.
 `VNPAY` chỉ là giá trị được lưu, chưa có tích hợp giao dịch thanh toán.
 
-Ba bảng mới chỉ có entity, khóa ngoại, index và ràng buộc; chưa có API nghiệp vụ.
+`reviews` và `product_recommendations` mới có entity, khóa ngoại, index và ràng buộc;
+chưa có API nghiệp vụ. Bảo hành đã có API user/admin, xem phần bên dưới.
 `warranty_tickets.productId` bắt buộc; `userId`, `orderCode`, `serialNumber` tùy chọn.
 Nếu có `orderCode`, mã phải tồn tại trong `orders`. Các liên kết mới dùng `RESTRICT`
 để tránh xóa dây chuyền. `targetUses` là mảng `OFFICE/GAMING/DESIGN`; `keySpecs` và
 `reasoningMap` là object JSONB, `productId` có thể `NULL`.
+
+### API bảo hành sản phẩm
+
+Xem [WARRANTY_API_HANDOFF.md](./WARRANTY_API_HANDOFF.md) cho tài liệu tích hợp FE.
+API gồm tra cứu thiết bị của user, gửi yêu cầu, lịch sử, quản lý trạng thái,
+bộ đếm và đăng ký/hiệu chỉnh thiết bị của admin.
+
+Chạy `npm run migration:run` để áp dụng `AddWarrantyWorkflow1793145600000` trước
+khi chạy API mới. Khi đơn chuyển `Done`, backend tạo hồ sơ cho từng thiết bị và
+chụp chính sách bảo hành tại thời điểm bàn giao. Đơn Done cũ cần admin xác minh
+ngày bắt đầu và đăng ký hồ sơ; không suy đoán từ ngày tạo giỏ.
+
+`npm run test:warranties` chạy kiểm thử HTTP/PostgreSQL với database tạm tự tạo
+và tự dọn; cần quyền CREATE DATABASE. `npm test -- --runInBand` có kiểm thử lịch
+tháng, năm nhuận, biên ngày hết hạn và múi giờ Việt Nam.
 
 ### Kiểm thử database riêng
 
